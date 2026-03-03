@@ -1,0 +1,2 @@
+# KronCompare
+Krontek comparation library
