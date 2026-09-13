@@ -156,6 +156,24 @@ int main(void)
     /* -----------------------------------------------------------------------
      * Summary
      * --------------------------------------------------------------------- */
+    /* -----------------------------------------------------------------------
+     * MUX — empty-array guard (n == 0 used to underflow to arr[255])
+     * --------------------------------------------------------------------- */
+    {
+        const float   fa[3] = {1.0f, 2.0f, 3.0f};
+        const int32_t ia[3] = {10, 20, 30};
+
+        check("MUX_F: n=0 -> 0.0",       KRON_MUX_F(0u, fa, 0u) == 0.0f);
+        check("MUX_I: n=0 -> 0",         KRON_MUX_I(0u, ia, 0u) == 0);
+        check("MUX_F: n=0, k=7 -> 0.0",  KRON_MUX_F(7u, fa, 0u) == 0.0f);
+        check("MUX_I: NULL arr -> 0",    KRON_MUX_I(0u, NULL, 3u) == 0);
+        check("MUX_F: NULL arr -> 0.0",  KRON_MUX_F(0u, NULL, 3u) == 0.0f);
+        /* Normal behaviour unchanged */
+        check("MUX_I: k=1, n=3 -> 20",   KRON_MUX_I(1u, ia, 3u) == 20);
+        check("MUX_I: k>=n saturates",   KRON_MUX_I(9u, ia, 3u) == 30);
+        check("MUX_F: k=2, n=3 -> 3.0",  KRON_MUX_F(2u, fa, 3u) == 3.0f);
+    }
+
     printf("%d passed, %d failed\n", pass_count, fail_count);
     return fail_count == 0 ? 0 : 1;
 }

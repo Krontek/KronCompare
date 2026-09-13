@@ -54,6 +54,7 @@ float   KRON_SEL_F(bool g, float   in0, float   in1);
 int32_t KRON_SEL_I(bool g, int32_t in0, int32_t in1);
 
 /* MUX(K, arr, n) : returns arr[K] if K < n, else arr[n-1]  (IEC §2.5.1.6)
+ *                  n == 0 (or arr == NULL) returns zero.
  * Array must have at least n elements (n >= 1). */
 float   KRON_MUX_F(uint8_t k, const float   *arr, uint8_t n);
 int32_t KRON_MUX_I(uint8_t k, const int32_t *arr, uint8_t n);

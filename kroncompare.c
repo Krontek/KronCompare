@@ -40,15 +40,20 @@ int32_t KRON_SEL_I(bool g, int32_t in0, int32_t in1)
     return g ? in1 : in0;
 }
 
-/* Returns arr[k] when k < n, else arr[n-1] (saturates at last element). */
+/* Returns arr[k] when k < n, else arr[n-1] (saturates at last element).
+ * n == 0 describes an empty array — there is no element to saturate to, so
+ * return zero rather than letting (n - 1) wrap to 255 and index out of bounds.
+ * A NULL arr is treated the same way. */
 float KRON_MUX_F(uint8_t k, const float *arr, uint8_t n)
 {
+    if (!arr || n == 0u) return 0.0f;
     if (k >= n) k = (uint8_t)(n - 1u);
     return arr[k];
 }
 
 int32_t KRON_MUX_I(uint8_t k, const int32_t *arr, uint8_t n)
 {
+    if (!arr || n == 0u) return 0;
     if (k >= n) k = (uint8_t)(n - 1u);
     return arr[k];
 }
